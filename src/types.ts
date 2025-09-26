@@ -1,15 +1,15 @@
 interface CallbackOutput {
   name: string;
-  value: string;
+  value: number | string | string[];
 }
 
 interface CallbackInput {
   name: string;
-  value: string;
+  value: number | string | string[];
 }
 
 interface Callback {
-  type: 'NameCallback' | 'PasswordCallback';
+  type: 'NameCallback' | 'PasswordCallback' | 'ConfirmationCallback';
   output: CallbackOutput[];
   input: CallbackInput[];
 }
@@ -21,6 +21,10 @@ interface AuthData {
   header: string;
   infoText: string[];
   callbacks: Callback[];
+}
+
+interface LoginFormFactory {
+  constructLoginForm(authData: AuthData): React.FC
 }
 
 export type { AuthData, Callback, CallbackInput, CallbackOutput };

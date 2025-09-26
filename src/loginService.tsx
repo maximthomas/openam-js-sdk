@@ -2,36 +2,53 @@ import type { AuthData } from "./types";
 
 const OPENAM_URL = "http://openam.example.org:8080/openam/json/realms/root/authenticate";
 
-var loginService = {
+class LoginService {
 
-    init: async (): Promise<AuthData> => {
-        try {
-            const response = await fetch(OPENAM_URL, {
-                method: "POST",
-                mode: "cors",
-            })
-            return await response.json();
-        } catch (e) {
-            console.log("fallback to test data")
-            return JSON.parse(mockData);
-        }
-    },
-
-    submitCallbacks: async (authData: AuthData) => {
-        try {
-            const response = await fetch(OPENAM_URL, {
-                method: "POST",
-                mode: "cors",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(authData),
-            })
-            return await response.json();
-        } catch (e) {
-            console.log("error posting data ", JSON.stringify(authData))            
-        }
+  async init(): Promise<AuthData> {
+    try {
+      const response = await fetch(OPENAM_URL, {
+        method: "POST",
+        mode: "cors",
+      })
+      return await response.json();
+    } catch (e) {
+      console.log("fallback to test data", e)
+      return JSON.parse(mockData);
     }
+  }
+
+  async submitCallbacks(authData: AuthData) {
+    try {
+      const response = await fetch(OPENAM_URL, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(authData),
+      })
+      return await response.json();
+    } catch (e) {
+      console.log("error posting data", e, JSON.stringify(authData))
+    }
+  }
+
+  setCallbackValue(index: number, value: string | number, authData: AuthData): AuthData {
+
+    return {
+      ...authData,
+      callbacks: authData.callbacks.map((cb, cbIdx) =>
+        index === cbIdx ?
+          {
+            ...cb,
+            input: cb.input.map((input, inpIdx) =>
+              inpIdx === 0 ? { ...input, value: value } : input
+            ),
+          }
+          : cb
+      )
+    };
+  }
 
 }
 
@@ -74,8 +91,131 @@ const mockData = `{
           "value": "changeit"
         }
       ]
+    },
+    {
+      "type": "ConfirmationCallback",
+      "output": [
+        {
+          "name": "prompt",
+          "value": ""
+        },
+        {
+          "name": "messageType",
+          "value": 0
+        },
+        {
+          "name": "options",
+          "value": [
+            "Register device",
+            "Skip this step"
+          ]
+        },
+        {
+          "name": "optionType",
+          "value": -1
+        },
+        {
+          "name": "defaultOption",
+          "value": 0
+        }
+      ],
+      "input": [
+        {
+          "name": "IDToken1",
+          "value": "1"
+        }
+      ]
     }
   ]
 }`
 
-export { loginService }
+const otpMockData = `
+{
+    "authId": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoSW5kZXhWYWx1ZSI6Im9hdXRoIiwib3RrIjoicHU0cTU0ZnQwaWI5ZnFhaTFhYnJ0YjBpNmQiLCJhdXRoSW5kZXhUeXBlIjoic2VydmljZSIsInJlYWxtIjoiZGM9b3BlbmFtLGRjPW9wZW5pZGVudGl0eXBsYXRmb3JtLGRjPW9yZyIsInNlc3Npb25JZCI6IkFRSUM1d00yTFk0U2ZjeWZEd1plMFBmNWdvT3ZsSDJQUzBxN3ZiR2dOaWhpRVRJLipBQUpUU1FBQ01ERUFBbE5MQUJNeU5URTBOamN5TXprMk1UazBNakkwTkRJNEFBSlRNUUFBKiJ9.h9x_WoueTZpZlYJIDKPflUgtWuAD7br0NabUgaY0t2I",
+    "template": "",
+    "stage": "AuthenticatorOATH2",
+    "header": "Authenticator (OATH)",
+    "infoText": [],
+    "callbacks": [
+        {
+            "type": "ConfirmationCallback",
+            "output": [
+                {
+                    "name": "prompt",
+                    "value": ""
+                },
+                {
+                    "name": "messageType",
+                    "value": 0
+                },
+                {
+                    "name": "options",
+                    "value": [
+                        "Register device",
+                        "Skip this step"
+                    ]
+                },
+                {
+                    "name": "optionType",
+                    "value": -1
+                },
+                {
+                    "name": "defaultOption",
+                    "value": 0
+                }
+            ],
+            "input": [
+                {
+                    "name": "IDToken1",
+                    "value": 0
+                }
+            ]
+        }
+    ]
+}`
+
+const otpSubmitted = `{
+  "authId": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoSW5kZXhWYWx1ZSI6Im9hdXRoIiwib3RrIjoicHU0cTU0ZnQwaWI5ZnFhaTFhYnJ0YjBpNmQiLCJhdXRoSW5kZXhUeXBlIjoic2VydmljZSIsInJlYWxtIjoiZGM9b3BlbmFtLGRjPW9wZW5pZGVudGl0eXBsYXRmb3JtLGRjPW9yZyIsInNlc3Npb25JZCI6IkFRSUM1d00yTFk0U2ZjeWZEd1plMFBmNWdvT3ZsSDJQUzBxN3ZiR2dOaWhpRVRJLipBQUpUU1FBQ01ERUFBbE5MQUJNeU5URTBOamN5TXprMk1UazBNakkwTkRJNEFBSlRNUUFBKiJ9.h9x_WoueTZpZlYJIDKPflUgtWuAD7br0NabUgaY0t2I",
+  "template": "",
+  "stage": "AuthenticatorOATH2",
+  "header": "Authenticator (OATH)",
+  "infoText": [],
+  "callbacks": [
+    {
+      "type": "ConfirmationCallback",
+      "output": [
+        {
+          "name": "prompt",
+          "value": ""
+        },
+        {
+          "name": "messageType",
+          "value": 0
+        },
+        {
+          "name": "options",
+          "value": [
+            "Register device",
+            "Skip this step"
+          ]
+        },
+        {
+          "name": "optionType",
+          "value": -1
+        },
+        {
+          "name": "defaultOption",
+          "value": 0
+        }
+      ],
+      "input": [
+        {
+          "name": "IDToken1",
+          "value": "1"
+        }
+      ]
+    }
+  ]
+}`
+
+export { LoginService }
