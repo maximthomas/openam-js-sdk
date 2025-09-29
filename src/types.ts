@@ -1,20 +1,20 @@
-interface CallbackOutput {
+export interface CallbackOutput {
   name: string;
   value: number | string | string[];
 }
 
-interface CallbackInput {
+export interface CallbackInput {
   name: string;
   value: number | string | string[];
 }
 
-interface Callback {
+export interface Callback {
   type: 'NameCallback' | 'PasswordCallback' | 'ConfirmationCallback';
   output: CallbackOutput[];
   input: CallbackInput[];
 }
 
-interface AuthData {
+export interface AuthData {
   authId: string;
   template: string;
   stage: string;
@@ -23,8 +23,16 @@ interface AuthData {
   callbacks: Callback[];
 }
 
-interface LoginFormFactory {
-  constructLoginForm(authData: AuthData): React.FC
+export interface SuccessfulAuth {
+  tokenId: string;
+  successUrl: string;
+  realm: string;
 }
 
-export type { AuthData, Callback, CallbackInput, CallbackOutput };
+export interface AuthError {
+  code: number
+  reason: string;
+  message: string;
+}
+
+export type AuthResponse = AuthData | SuccessfulAuth | AuthError;

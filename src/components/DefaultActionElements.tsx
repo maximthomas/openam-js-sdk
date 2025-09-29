@@ -4,7 +4,7 @@ const DefaultActionElements: ActionElements = ({callbacks}) => {
   
     const defaultAction = <input type="submit" value="Log In"/>
     const callbackIdx = callbacks.findIndex((cb) => (cb.type === 'ConfirmationCallback'));
-    if (callbackIdx < -1) {
+    if (callbackIdx < 0) {
         return defaultAction;
     } 
     const opts = callbacks[callbackIdx].output.find((o) => (o.name === 'options'))?.value;

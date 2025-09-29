@@ -1,23 +1,32 @@
-import type { AuthData } from "./types";
+import type { AuthData, AuthError, AuthResponse, SuccessfulAuth } from "./types";
 
 const OPENAM_URL = "http://openam.example.org:8080/openam/json/realms/root/authenticate";
 
 class LoginService {
 
-  async init(): Promise<AuthData> {
+  async init(): Promise<AuthResponse> {
     try {
       const response = await fetch(OPENAM_URL, {
         method: "POST",
         mode: "cors",
       })
-      return await response.json();
+      const json = await response.json();
+      if (!response.ok) {
+          return json as AuthError
+      }
+      
+      if(json.tokenId) {
+        return json as SuccessfulAuth
+      } else {
+        return json as AuthData
+      }
     } catch (e) {
       console.log("fallback to test data", e)
-      return JSON.parse(mockData);
+      return JSON.parse(successfulAuth) as AuthError;
     }
   }
 
-  async submitCallbacks(authData: AuthData) {
+  async submitCallbacks(authData: AuthData): Promise<AuthResponse> {
     try {
       const response = await fetch(OPENAM_URL, {
         method: "POST",
@@ -30,6 +39,8 @@ class LoginService {
       return await response.json();
     } catch (e) {
       console.log("error posting data", e, JSON.stringify(authData))
+      console.log("fallback to test data", e)
+      return JSON.parse(mockData);
     }
   }
 
@@ -147,93 +158,13 @@ const mockData = `{
   ]
 }`
 
-const otpMockData = `
-{
-    "authId": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoSW5kZXhWYWx1ZSI6Im9hdXRoIiwib3RrIjoicHU0cTU0ZnQwaWI5ZnFhaTFhYnJ0YjBpNmQiLCJhdXRoSW5kZXhUeXBlIjoic2VydmljZSIsInJlYWxtIjoiZGM9b3BlbmFtLGRjPW9wZW5pZGVudGl0eXBsYXRmb3JtLGRjPW9yZyIsInNlc3Npb25JZCI6IkFRSUM1d00yTFk0U2ZjeWZEd1plMFBmNWdvT3ZsSDJQUzBxN3ZiR2dOaWhpRVRJLipBQUpUU1FBQ01ERUFBbE5MQUJNeU5URTBOamN5TXprMk1UazBNakkwTkRJNEFBSlRNUUFBKiJ9.h9x_WoueTZpZlYJIDKPflUgtWuAD7br0NabUgaY0t2I",
-    "template": "",
-    "stage": "AuthenticatorOATH2",
-    "header": "Authenticator (OATH)",
-    "infoText": [],
-    "callbacks": [
-        {
-            "type": "ConfirmationCallback",
-            "output": [
-                {
-                    "name": "prompt",
-                    "value": ""
-                },
-                {
-                    "name": "messageType",
-                    "value": 0
-                },
-                {
-                    "name": "options",
-                    "value": [
-                        "Register device",
-                        "Skip this step"
-                    ]
-                },
-                {
-                    "name": "optionType",
-                    "value": -1
-                },
-                {
-                    "name": "defaultOption",
-                    "value": 0
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1",
-                    "value": 0
-                }
-            ]
-        }
-    ]
+const successfulAuth = `{
+    "tokenId": "AQIC5wM2LY4SfcwIaAQY6dwlk4xEQjX9v59vw3gRzpGwfTI.*AAJTSQACMDEAAlNLABM2NDI1MzUyMDYwODgwODYyNzkyAAJTMQAA*",
+    "successUrl": "/openam/console",
+    "realm": "/"
 }`
 
-const otpSubmitted = `{
-  "authId": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoSW5kZXhWYWx1ZSI6Im9hdXRoIiwib3RrIjoicHU0cTU0ZnQwaWI5ZnFhaTFhYnJ0YjBpNmQiLCJhdXRoSW5kZXhUeXBlIjoic2VydmljZSIsInJlYWxtIjoiZGM9b3BlbmFtLGRjPW9wZW5pZGVudGl0eXBsYXRmb3JtLGRjPW9yZyIsInNlc3Npb25JZCI6IkFRSUM1d00yTFk0U2ZjeWZEd1plMFBmNWdvT3ZsSDJQUzBxN3ZiR2dOaWhpRVRJLipBQUpUU1FBQ01ERUFBbE5MQUJNeU5URTBOamN5TXprMk1UazBNakkwTkRJNEFBSlRNUUFBKiJ9.h9x_WoueTZpZlYJIDKPflUgtWuAD7br0NabUgaY0t2I",
-  "template": "",
-  "stage": "AuthenticatorOATH2",
-  "header": "Authenticator (OATH)",
-  "infoText": [],
-  "callbacks": [
-    {
-      "type": "ConfirmationCallback",
-      "output": [
-        {
-          "name": "prompt",
-          "value": ""
-        },
-        {
-          "name": "messageType",
-          "value": 0
-        },
-        {
-          "name": "options",
-          "value": [
-            "Register device",
-            "Skip this step"
-          ]
-        },
-        {
-          "name": "optionType",
-          "value": -1
-        },
-        {
-          "name": "defaultOption",
-          "value": 0
-        }
-      ],
-      "input": [
-        {
-          "name": "IDToken1",
-          "value": "1"
-        }
-      ]
-    }
-  ]
-}`
+const authError = `{"code":401,"reason":"Unauthorized","message":"Authentication Failed"}`
+
 
 export { LoginService }
