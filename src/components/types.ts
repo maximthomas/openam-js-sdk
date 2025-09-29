@@ -4,7 +4,7 @@ import type { AuthData, Callback } from "../types";
 type LoginForm = React.FC<{
   authData: AuthData,
   setCallbackValue: (i: number, val: string) => void,
-  doLogin: () => void
+  doLogin: (action: string) => void
 }> 
 
 type CallbackElement = React.FC<{

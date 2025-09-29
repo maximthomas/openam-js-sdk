@@ -50,6 +50,24 @@ class LoginService {
     };
   }
 
+  setConfirmationActionValue(action: string, authData: AuthData): AuthData {
+    const callbacks = authData.callbacks;
+    const callbackIdx = callbacks.findIndex((cb) => (cb.type === 'ConfirmationCallback'));
+    if(callbackIdx < 0) {
+      return authData;
+    }
+    const opts = callbacks[callbackIdx].output.find((o) => (o.name === 'options'))?.value as string[];
+    if (!Array.isArray(opts)) {
+      return authData;
+    }
+
+    const actionIdx = opts.findIndex((val) => val === action);
+    if(actionIdx < 0) {
+      return authData;
+    }
+    return this.setCallbackValue(callbackIdx, actionIdx, authData);
+  }
+
 }
 
 const mockData = `{
@@ -121,7 +139,7 @@ const mockData = `{
       ],
       "input": [
         {
-          "name": "IDToken1",
+          "name": "IDToken3",
           "value": "1"
         }
       ]

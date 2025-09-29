@@ -12,19 +12,19 @@ const DefaultLoginForm: LoginForm = ({ authData, setCallbackValue, doLogin }) =>
 
     if (submitter instanceof HTMLButtonElement || submitter instanceof HTMLInputElement) {
       console.log('Submit button name:', submitter.name);
-      // You can now use submitter.name to conditionally handle actions
+      doLogin(submitter.value);
     } else {
       console.log('No specific submit button name found or form submitted by pressing Enter.');
     }
-    doLogin();
+    
   }
 
   return <div>
-    <h1>Login</h1>
+    <h1>{authData.header}</h1>
     <form onSubmit={ handleSubmit }>
-      {authData.callbacks.map((cb, i) => {
+      {authData.callbacks.filter((cb) => cb.type !== 'ConfirmationCallback' ).map((cb, i) => {
         const id = cb.input[0].name;
-        return <DefaultCallbackElement key={id} callback={cb} setCallbackValue={(val) => setCallbackValue(i, val)} />
+        return <><DefaultCallbackElement key={id} callback={cb} setCallbackValue={(val) => setCallbackValue(i, val)} /><br/></>
       })}
        <DefaultActionElements callbacks={authData.callbacks} />
     </form>

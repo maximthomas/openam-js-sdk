@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { act, useEffect, useState } from "react";
 import { LoginService } from "./loginService";
 import type { AuthData } from "./types";
 import DefaultLoginForm from "./components/DefaultForm";
@@ -25,11 +25,14 @@ const Login = () => {
     setAuthData(newAuthData);
   }
 
-  const doLogin = () => {
+  const doLogin = (action: string) => {
     if (!authData) {
       return
     }
-    loginService.submitCallbacks(authData)
+
+    const newAuthData = loginService.setConfirmationActionValue(action, authData);
+
+    loginService.submitCallbacks(newAuthData)
   }
 
   if (authData) {
