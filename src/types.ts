@@ -44,6 +44,7 @@ export interface UserAuthData {
 }
 
 export interface UserData {
+  telephoneNumber: any;
   username: string;
   realm: string;
   uid: string[];
