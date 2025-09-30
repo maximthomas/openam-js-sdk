@@ -1,22 +1,28 @@
-import { act, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { LoginService } from "./loginService";
-import type { AuthData, AuthError, AuthResponse, SuccessfulAuth } from "./types";
+import type { AuthData, AuthError, AuthResponse, SuccessfulAuth, UserAuthData } from "./types";
 import DefaultLoginForm from "./components/DefaultForm";
 
-const loginService = new LoginService();
 
-const Login = () => {
+type LoginProps = {
+  loginService: LoginService;
+  successfulAuthHandler: (userData: SuccessfulAuth) => void;
+} 
 
-  function isAuthError(response: any): response is AuthError {
-    return response && typeof response.code === 'number' && typeof response.message === 'string';
+const Login:  React.FC<LoginProps> = ({loginService, successfulAuthHandler}) => {
+
+  function isAuthError(response: unknown): response is AuthError {
+    return typeof response === 'object' && response !== null && 'code' in response && 'message' in response;
   }
 
-  function isAuthData(response: any): response is AuthData {
-    return response && typeof response.authId === 'string' && Array.isArray(response.callbacks);
+  function isAuthData(response: unknown): response is AuthData {
+    return typeof response === 'object' && response !== null && 'authId' in response
+      && 'callbacks' in response && Array.isArray(response.callbacks);
   }
 
-  function isSuccessfulAuth(response: any): response is SuccessfulAuth {
-    return response && typeof response.tokenId === 'string' && typeof response.successUrl === 'string';
+  function isSuccessfulAuth(response: unknown): response is SuccessfulAuth {
+    return typeof response === 'object' && response !== null && 'tokenId' in response
+      && 'successUrl' in response && typeof response.tokenId === 'string' && typeof response.successUrl === 'string';
   }
 
   function handleAuthResponse(response: AuthResponse) {
@@ -28,7 +34,7 @@ const Login = () => {
     } else if (isSuccessfulAuth(response)) {
       //  handleSuccessfulAuth(authResponse);
       console.log("successful auth");
-
+      successfulAuthHandler(response);
     } else {
       console.error("Unknown response format", response);
     }
@@ -61,7 +67,7 @@ const Login = () => {
     const newAuthData = loginService.setConfirmationActionValue(action, authData);
 
     const authResponse = await loginService.submitCallbacks(newAuthData)
-    
+
     handleAuthResponse(authResponse);
   }
 

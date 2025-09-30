@@ -35,4 +35,30 @@ export interface AuthError {
   message: string;
 }
 
+export interface UserAuthData {
+  id: string;
+  realm: string;
+  dn: string;
+  successURL: string;
+  fullLoginURL: string;
+}
+
+export interface UserData {
+  username: string;
+  realm: string;
+  uid: string[];
+  universalid: string[];
+  oath2faEnabled: string[];
+  objectClass: string[];
+  inetUserStatus: string[];
+  dn: string[];
+  sn: string[];
+  cn: string[];
+  createTimestamp: string[];
+  modifyTimestamp: string[];
+  roles: string[];
+  givenName?: string[];
+  mail?: string[];
+}
+
 export type AuthResponse = AuthData | SuccessfulAuth | AuthError;

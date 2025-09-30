@@ -1,36 +1,37 @@
-import type { AuthData, AuthError, AuthResponse, SuccessfulAuth } from "./types";
-
-const OPENAM_URL = "http://openam.example.org:8080/openam/json/realms/root/authenticate";
+import type { AuthData, AuthResponse } from "./types";
 
 class LoginService {
 
+  private authURL: string;
+
+  constructor(openamUrl: string) {
+    this.authURL = openamUrl.concat("/json/realms/root/authenticate");
+  }
+  
   async init(): Promise<AuthResponse> {
     try {
-      const response = await fetch(OPENAM_URL, {
+      const response = await fetch(this.authURL, {
         method: "POST",
         mode: "cors",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
       })
-      const json = await response.json();
-      if (!response.ok) {
-          return json as AuthError
-      }
+      return await response.json();
       
-      if(json.tokenId) {
-        return json as SuccessfulAuth
-      } else {
-        return json as AuthData
-      }
     } catch (e) {
       console.log("fallback to test data", e)
-      return JSON.parse(successfulAuth) as AuthError;
+      return JSON.parse(mockData) as AuthResponse;
     }
   }
 
   async submitCallbacks(authData: AuthData): Promise<AuthResponse> {
     try {
-      const response = await fetch(OPENAM_URL, {
+      const response = await fetch(this.authURL, {
         method: "POST",
         mode: "cors",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json"
         },
@@ -40,7 +41,7 @@ class LoginService {
     } catch (e) {
       console.log("error posting data", e, JSON.stringify(authData))
       console.log("fallback to test data", e)
-      return JSON.parse(mockData);
+      return JSON.parse(successfulAuth) as AuthResponse;
     }
   }
 
@@ -164,7 +165,7 @@ const successfulAuth = `{
     "realm": "/"
 }`
 
-const authError = `{"code":401,"reason":"Unauthorized","message":"Authentication Failed"}`
+//const authError = `{"code":401,"reason":"Unauthorized","message":"Authentication Failed"}`
 
 
 export { LoginService }
