@@ -17,14 +17,25 @@ yarn add openam-js-sdk
 ``` 
 ## Usage
 Here's a basic example of how to use the SDK in a React application:
+
 ```tsx
 import React from 'react';
-import { Login } from 'openam-js-sdk';
+import OpenAMUI from 'openam-js-sdk';
 import 'openam-js-sdk/dist/style.css';
 const App = () => {
   return (
     <div>
-
+      <OpenAMUI />
     </div>
   );
 };
+```
+
+## Customization
+You can customize the SDK by providing your own UI components and styles. 
+Use
+
+
+## Contributing
+Contributions are welcome! Please fork the repository and submit a pull request with your changes. Make sure to follow the coding standards and include tests for any new features.
+

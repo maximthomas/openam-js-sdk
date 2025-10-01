@@ -62,15 +62,15 @@ class UserService {
 
 export { UserService }
 
-const usersSuccessfulResponse = `{
-    "id": "demo",
-    "realm": "/",
-    "dn": "id=demo,ou=user,dc=openam,dc=openidentityplatform,dc=org",
-    "successURL": "/openam/console",
-    "fullLoginURL": "/openam/UI/Login?realm=%2F"
-}`
+// const usersSuccessfulResponse = `{
+//     "id": "demo",
+//     "realm": "/",
+//     "dn": "id=demo,ou=user,dc=openam,dc=openidentityplatform,dc=org",
+//     "successURL": "/openam/console",
+//     "fullLoginURL": "/openam/UI/Login?realm=%2F"
+// }`
 
-const userUnauthorizedResponse = `{"code":401,"reason":"Unauthorized","message":"Access Denied"}`
+// const userUnauthorizedResponse = `{"code":401,"reason":"Unauthorized","message":"Access Denied"}`
 
 const userData = `{
     "username": "demo",

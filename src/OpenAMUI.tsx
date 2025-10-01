@@ -5,7 +5,7 @@ import { LoginService } from "./loginService";
 import Login from "./Login";
 import { getConfig } from "./config";
 
-const App = () => {
+const OpenAMUI = () => {
 
     const config = getConfig();
     const loginService = new LoginService(config.getOpenAmUrl());
@@ -61,4 +61,4 @@ const App = () => {
     return <Login loginService={loginService} successfulAuthHandler={successfullAuthHandler} errorAuthHandler={errorAuthHandler} />;
 };
 
-export default App;
+export default OpenAMUI;
