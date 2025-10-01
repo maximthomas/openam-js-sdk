@@ -1,36 +1,57 @@
 import { useEffect, useState } from "react";
-import type { SuccessfulAuth, UserAuthData } from "./types";
+import type { AuthError, SuccessfulAuth, UserAuthData } from "./types";
 import { UserService } from "./userService";
 import { LoginService } from "./loginService";
 import Login from "./Login";
-import User from "./User";
+import config from "./config";
 
-const OPENAM_URL = "http://openam.example.org:8080/openam";
 
-const loginService = new LoginService(OPENAM_URL);
-const userService = new UserService(OPENAM_URL);
+const loginService = new LoginService(config.openamURL);
+const userService = new UserService(config.openamURL);
 
 const App = () => {
+
     const [userAuthData, setUserAuthData] = useState<UserAuthData | null>(null);
 
+    const [error, setError] = useState<AuthError | null>(null);
+
     useEffect(() => {
+        if (error) {
+            return;
+        }
         const initAuth = async () => {
             const userData = await userService.getUserIdFromSession()
             setUserAuthData(userData);
         }
         initAuth();
-    }, [])
+    }, [error])
 
-    const successfullAuthHandler = async (_: SuccessfulAuth) => {
+    const successfullAuthHandler = async (successfulAuth : SuccessfulAuth) => {
+        if(config.redirectOnSuccessfulLogin){
+            const absoluteUrlPattern = /^(?:[a-z+]+:)?\/\//i;
+            if(absoluteUrlPattern.test(successfulAuth.successUrl)) {
+                window.location.href = successfulAuth.successUrl;
+            } else {
+                window.location.href = config.openamURL.concat(successfulAuth.successUrl)    
+            }
+            return;
+        }
         const userData = await userService.getUserIdFromSession()
         setUserAuthData(userData);
     }
 
-    if (userAuthData && userAuthData.id) {
-        return <User userAuthData={userAuthData} userService={userService} />;
+    const errorAuthHandler = (authError: AuthError) => {
+        setError(authError);
+    }
+    if(error) {
+        return <config.errorForm error={error} resetError={() => setError(null)} />;
     }
 
-    return <Login loginService={loginService} successfulAuthHandler={successfullAuthHandler} />;
+    if (userAuthData && userAuthData.id) {
+        return <config.userForm userAuthData={userAuthData} userService={userService} />;
+    }
+
+    return <Login loginService={loginService} successfulAuthHandler={successfullAuthHandler} errorAuthHandler={errorAuthHandler} />;
 };
 
 export default App;
