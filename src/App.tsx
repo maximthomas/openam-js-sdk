@@ -3,13 +3,13 @@ import type { AuthError, SuccessfulAuth, UserAuthData } from "./types";
 import { UserService } from "./userService";
 import { LoginService } from "./loginService";
 import Login from "./Login";
-import config from "./config";
-
-
-const loginService = new LoginService(config.getOpenAmUrl());
-const userService = new UserService(config.getOpenAmUrl());
+import { getConfig } from "./config";
 
 const App = () => {
+
+    const config = getConfig();
+    const loginService = new LoginService(config.getOpenAmUrl());
+    const userService = new UserService(config.getOpenAmUrl());
 
     const [userAuthData, setUserAuthData] = useState<UserAuthData | null>(null);
 

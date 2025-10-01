@@ -24,8 +24,7 @@ import 'openam-js-sdk/dist/style.css';
 const App = () => {
   return (
     <div>
-      <h1>Welcome to OpenAM Authentication</h1>
-      <Login />
+
     </div>
   );
 };

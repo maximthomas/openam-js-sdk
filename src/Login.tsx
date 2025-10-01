@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { LoginService } from "./loginService";
 import type { AuthData, AuthError, AuthResponse, SuccessfulAuth } from "./types";
-import config from "./config";
+import { getConfig } from "./config";
 
+const config = getConfig();
 
 type LoginProps = {
     loginService: LoginService;

@@ -1,9 +1,10 @@
 import { Fragment } from "react";
-import config from "../config";
 import type { LoginForm } from "./types";
+import { getConfig } from "../config";
 
 const DefaultLoginForm: LoginForm = ({ authData, setCallbackValue, doLogin }) => {
 
+    const config = getConfig();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

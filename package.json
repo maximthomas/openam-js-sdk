@@ -1,13 +1,14 @@
 {
   "name": "openam-js-sdk",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "package": "rm -f openam-js-sdk*.zip && zip -r openam-js-sdk.zip . -x 'node_modules/*' '.git/*' '.vscode/*' '*.zip' '*.log' 'dist/*'"
   },
   "dependencies": {
     "react": "^19.1.1",

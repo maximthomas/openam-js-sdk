@@ -5,7 +5,7 @@ import DefaultLoginForm from "./components/DefaultLoginForm";
 import DefaultUserForm from "./components/DefaultUserForm";
 import type { CallbackElement, LoginForm, UserForm, ActionElements, ErrorForm } from "./components/types";
 
-interface Config {
+export interface Config {
     openamServer: string;
     openamContextPath: string;
     getOpenAmUrl(): string;
@@ -17,10 +17,10 @@ interface Config {
     redirectOnSuccessfulLogin: boolean;
 }
 
-const config: Config = {
+const currentConfig: Config = {
     openamServer: "http://openam.example.org:8080",
     openamContextPath: "/openam",
-    getOpenAmUrl: () => `${config.openamServer}${config.openamContextPath}`,
+    getOpenAmUrl: () => `${currentConfig.openamServer}${currentConfig.openamContextPath}`,
     loginForm: DefaultLoginForm,
     userForm: DefaultUserForm,
     errorForm: DefaultErrorForm,
@@ -29,4 +29,8 @@ const config: Config = {
     redirectOnSuccessfulLogin: false,
 }
 
-export default config;
+export const getConfig = (): Config => currentConfig;
+
+export const setConfig = (newConfig: Partial<Config>) => {
+    Object.assign(currentConfig, newConfig);
+}
