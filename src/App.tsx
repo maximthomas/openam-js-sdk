@@ -6,8 +6,8 @@ import Login from "./Login";
 import config from "./config";
 
 
-const loginService = new LoginService(config.openamURL);
-const userService = new UserService(config.openamURL);
+const loginService = new LoginService(config.getOpenAmUrl());
+const userService = new UserService(config.getOpenAmUrl());
 
 const App = () => {
 
@@ -26,14 +26,18 @@ const App = () => {
         initAuth();
     }, [error])
 
+    const doRedirect = (url: string) => {
+        const absoluteUrlPattern = /^(?:[a-z+]+:)?\/\//i;
+        if(absoluteUrlPattern.test(url)) {
+            window.location.href = url;
+        } else {
+            window.location.href = config.openamServer.concat(url)    
+        }
+    }
+
     const successfullAuthHandler = async (successfulAuth : SuccessfulAuth) => {
         if(config.redirectOnSuccessfulLogin){
-            const absoluteUrlPattern = /^(?:[a-z+]+:)?\/\//i;
-            if(absoluteUrlPattern.test(successfulAuth.successUrl)) {
-                window.location.href = successfulAuth.successUrl;
-            } else {
-                window.location.href = config.openamURL.concat(successfulAuth.successUrl)    
-            }
+            doRedirect(successfulAuth.successUrl);
             return;
         }
         const userData = await userService.getUserIdFromSession()
@@ -46,8 +50,11 @@ const App = () => {
     if(error) {
         return <config.errorForm error={error} resetError={() => setError(null)} />;
     }
-
     if (userAuthData && userAuthData.id) {
+        if(config.redirectOnSuccessfulLogin) {
+            doRedirect(userAuthData.successURL);
+            return;
+        }
         return <config.userForm userAuthData={userAuthData} userService={userService} />;
     }
 

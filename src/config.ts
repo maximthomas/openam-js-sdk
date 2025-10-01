@@ -6,7 +6,9 @@ import DefaultUserForm from "./components/DefaultUserForm";
 import type { CallbackElement, LoginForm, UserForm, ActionElements, ErrorForm } from "./components/types";
 
 interface Config {
-    openamURL: string;
+    openamServer: string;
+    openamContextPath: string;
+    getOpenAmUrl(): string;
     loginForm: LoginForm;
     userForm: UserForm;
     errorForm: ErrorForm;
@@ -16,13 +18,15 @@ interface Config {
 }
 
 const config: Config = {
-    openamURL: "http://openam.example.org:8080/openam",
+    openamServer: "http://openam.example.org:8080",
+    openamContextPath: "/openam",
+    getOpenAmUrl: () => `${config.openamServer}${config.openamContextPath}`,
     loginForm: DefaultLoginForm,
     userForm: DefaultUserForm,
     errorForm: DefaultErrorForm,
     callbackElement: DefaultCallbackElement,
     actionElements: DefaultActionElements,
-    redirectOnSuccessfulLogin: true
+    redirectOnSuccessfulLogin: false,
 }
 
 export default config;

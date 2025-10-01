@@ -6,9 +6,11 @@ class UserService {
 
   //http://openam.example.org:8080/openam/json/realms/root/users/demo
 
+  private userUrlTemplate: string;
   private usersUrl: string;
 
   constructor(openamUrl: string) {
+    this.userUrlTemplate = openamUrl.concat("/json/realms/{realm}/users/{userId}");
     this.usersUrl = openamUrl.concat("/json/users");
   }
 
@@ -33,9 +35,14 @@ class UserService {
     }
   }
 
-  getUserData = async (userId: string): Promise<UserData> => {
+  getUserData = async (userId: string, realm: string): Promise<UserData> => {
     try {
-      const response = await fetch(this.usersUrl.concat("/").concat(userId), {
+      if (!realm || realm === "" || realm === "/") {
+        realm = "root";
+      } 
+      const userUrl= this.userUrlTemplate.replace("{realm}", realm).replace("{userId}", userId);
+      
+      const response = await fetch(userUrl, {
         method: "GET",
         mode: "cors",
         credentials: "include",

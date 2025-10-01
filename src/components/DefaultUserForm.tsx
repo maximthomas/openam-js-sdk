@@ -13,7 +13,7 @@ const DefaultUserForm: UserForm = ({ userAuthData, userService }) => {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const data = await userService.getUserData(userAuthData.id);
+            const data = await userService.getUserData(userAuthData.id, userAuthData.realm);
             setUserData(data);
         }
         fetchUserData();
