@@ -5,7 +5,7 @@ import { getConfig } from "./config";
 
 const config = getConfig();
 
-type LoginProps = {
+export type LoginProps = {
     loginService: LoginService;
     successfulAuthHandler: (userData: SuccessfulAuth) => void;
     errorAuthHandler: (authError: AuthError) => void;

@@ -7,4 +7,12 @@ export default defineConfig({
     allowedHosts: ["localhost", "openam.example.org"]
   },
   plugins: [react()],
+  build: {
+    outDir: 'dist/app',
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
 })

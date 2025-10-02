@@ -1,6 +1,6 @@
 import type React from "react";
-import type { AuthData, AuthError, Callback, UserAuthData } from "../types";
-import type { UserService } from "../userService";
+import type { AuthData, AuthError, Callback, UserAuthData } from '../types';
+import type { UserService } from '../userService';
 
 export type LoginForm = React.FC<{
   authData: AuthData,

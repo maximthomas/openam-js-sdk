@@ -5,7 +5,7 @@ import { LoginService } from "./loginService";
 import Login from "./Login";
 import { getConfig } from "./config";
 
-const OpenAMUI = () => {
+const OpenAMUI: React.FC = () => {
 
     const config = getConfig();
     const loginService = new LoginService(config.getOpenAmUrl());
