@@ -6,15 +6,15 @@ import DefaultUserForm from "./components/DefaultUserForm";
 import type { CallbackElement, LoginForm, UserForm, ActionElements, ErrorForm } from "./components/types";
 
 export interface Config {
-    openamServer: string;
-    openamContextPath: string;
-    getOpenAmUrl(): string;
-    loginForm: LoginForm;
-    userForm: UserForm;
-    errorForm: ErrorForm;
-    callbackElement: CallbackElement;
-    actionElements: ActionElements;
-    redirectOnSuccessfulLogin: boolean;
+    openamServer: string; //OpenAM server host, for example http://openam.example.org:8080
+    openamContextPath: string; //OpenAM context path, for example /openam
+    loginForm: LoginForm; //LoginForm interface implementation
+    userForm: UserForm; //UserForm interface implementation
+    errorForm: ErrorForm; //ErrorForm interface implementation
+    callbackElement: CallbackElement; //CallbackElement interface implementation
+    actionElements: ActionElements; //ActionElements interface implementation
+    redirectOnSuccessfulLogin: boolean; //redirects user on successful login to the target URL, otherwise shows a profile.
+    getOpenAmUrl(): string; //returns a full OpenAM URL, for example http://openam.example.org:8080/openam
 }
 
 const currentConfig: Config = {
@@ -26,7 +26,7 @@ const currentConfig: Config = {
     errorForm: DefaultErrorForm,
     callbackElement: DefaultCallbackElement,
     actionElements: DefaultActionElements,
-    redirectOnSuccessfulLogin: false,
+    redirectOnSuccessfulLogin: true,
 }
 
 export const getConfig = (): Config => currentConfig;
