@@ -1,7 +1,9 @@
-import OpenAMUI from "./OpenAMUI";
-import Login from "./Login";
-// export type { AuthData, AuthError, Callback, CallbackInput, CallbackOutput } from './types'
-// export type { LoginProps } from "./Login"
+import OpenAMUI from "./OpenAMUI"
+import Login from "./Login"
+
+export type * from './components/types'
+export * from './config'
+
 export { OpenAMUI, Login }
 
 
