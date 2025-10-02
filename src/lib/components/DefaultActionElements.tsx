@@ -12,7 +12,9 @@ const DefaultActionElements: ActionElements = ({callbacks}) => {
       return defaultAction;
     }
     
-    return <>{opts.map((o, i) => <input key={"IDButton"+i} name={"IDButton"+i} type="submit" value={o}/>)}</>;
+    return <>{opts.map((o, i) => 
+      <input className={i == 0 ? "primary-button" : "secondary-button"} key={"IDButton"+i} name={"IDButton"+i} type="submit" value={o}/>)}
+    </>;
 }
 
 export default DefaultActionElements
