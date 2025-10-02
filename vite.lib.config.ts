@@ -3,13 +3,12 @@ import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 import dts from 'vite-plugin-dts'
 
-console.log(resolve(__dirname, 'src/lib/index.ts'))
-
 // https://vite.dev/config/
 export default defineConfig({
   server: {
     allowedHosts: ["localhost", "openam.example.org"]
   },
+  
   plugins: [
     react(),
     dts({
@@ -17,6 +16,7 @@ export default defineConfig({
       outDir: 'dist/lib',
       insertTypesEntry: true,
       rollupTypes: true,
+      tsconfigPath: resolve(__dirname, "tsconfig.lib.json"),
     }),
   ],
   build: {
