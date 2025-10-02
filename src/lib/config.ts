@@ -18,8 +18,8 @@ export interface Config {
 }
 
 const currentConfig: Config = {
-    openamServer: "http://openam.example.org:8080",
-    openamContextPath: "/openam",
+    openamServer: import.meta.env.VITE_OPENAM_SERVER ?? "",
+    openamContextPath: import.meta.env.VITE_OPENAM_CONTEXT_PATH ?? "/openam",
     getOpenAmUrl: () => `${currentConfig.openamServer}${currentConfig.openamContextPath}`,
     loginForm: DefaultLoginForm,
     userForm: DefaultUserForm,

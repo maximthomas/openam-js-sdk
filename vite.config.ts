@@ -6,6 +6,7 @@ export default defineConfig({
   server: {
     allowedHosts: ["localhost", "openam.example.org"]
   },
+  base: './',
   plugins: [react()],
   build: {
     outDir: 'dist/app',
