@@ -10,7 +10,7 @@ export type LoginForm = React.FC<{
   doLogin: (action: string) => void
 }> 
 
-// renders a callback such as NameCallback, PasswordCallback and so ON
+// renders a callback such as NameCallback, PasswordCallback and so on
 export type CallbackElement = React.FC<{
     callback: Callback
     setCallbackValue: (val: string) => void
@@ -28,5 +28,5 @@ export type ErrorForm = React.FC<{
     resetError: () => void
 }>
 
-// renders submit buttons, if there are no ConfirmationCallback in the callbacks array, renders the default button
+// renders submit buttons; if there are no ConfirmationCallback in the callbacks array, renders the default button
 export type ActionElements = React.FC<{callbacks: Callback[]}>

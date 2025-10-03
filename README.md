@@ -1,13 +1,16 @@
 # OpenAM Alternative Frontend SDK
 
+OpenAM is a robust access management solution, but integrating it with modern frontend applications can be complex and time-consuming. This SDK aims to simplify that process by providing pre-built React components and a flexible, modular setup, saving developers significant time while ensuring secure, seamless integration with OpenAM.
+
 This project is intended to provide an alternative frontend SDK for interacting with Open Identity Platform's OpenAM authentication services. It is built using modern web technologies and aims to simplify the integration process for developers.
 
 ## Features
-- TypeScript support for type safety and better developer experience.
-- React components for easy integration into React applications.
-- Modular design for flexibility and customization.
+- **Ease of Use**: Pre-configured React components ready for integration.
+- **Modular & Flexible**: Easily swap components and customize the SDK to suit your needs.
+- **TypeScript Support**: Enhance development experience with type safety and better code completion.
+- **Seamless Integration**: Easily integrate OpenAM with minimal configura
 
-## Usage
+## Installation
 
 ### As an Application
 
@@ -23,9 +26,9 @@ npm install
 npm run build:app
 ```
 
-Copy the `dist/app` folder contents to your OpenAM's war file or to extracted war contenst in your web container, for example `extui` so it could be accesible in your OpenAM context path, for example, http://openam.example.org:8080/openam/extui
+Copy the contents of the `dist/app` folder into your OpenAM WAR file (or the extracted WAR contents in your web container), e.g., into a directory like `extui`, so it could be accessible in your OpenAM context path, for example, http://openam.example.org:8080/openam/extui
 
-You can aslo run the application in a standalone server. The only condition, the servers shoud be on the same subdomain, so OpenAM's cookies could be sent from the frontend application.
+You can also run the application in a standalone server. The only condition, the servers shold be on the same subdomain, so OpenAM's cookies could be sent from the frontend application.
 
 
 ## As an SDK library
@@ -64,7 +67,7 @@ export interface Config {
     callbackElement: CallbackElement; //CallbackElement interface implementation
     actionElements: ActionElements; //ActionElements interface implementation
     redirectOnSuccessfulLogin: boolean; //redirects user on successful login to the target URL, otherwise shows a profile.
-    getOpenAmUrl(): string; //returns a full OpenAM URL, for example http://openam.example.org:8080/openam
+    getOpenAmUrl: () => string; //returns a full OpenAM URL, for example http://openam.example.org:8080/openam
 }
 ```
 
@@ -72,6 +75,7 @@ for example
 
 ```tsx
 //update the default configuration
+import { setConfig } from 'openam-js-sdk'
 
 setConfig({
   openamServer: 'https://openam.example.org:443',
@@ -102,7 +106,7 @@ export type LoginForm = React.FC<{
   doLogin: (action: string) => void
 }> 
 
-// renders a callback such as NameCallback, PasswordCallback and so ON
+// renders a callback such as NameCallback, PasswordCallback and so on
 export type CallbackElement = React.FC<{
     callback: Callback
     setCallbackValue: (val: string) => void

@@ -14,7 +14,7 @@ export interface Config {
     callbackElement: CallbackElement; //CallbackElement interface implementation
     actionElements: ActionElements; //ActionElements interface implementation
     redirectOnSuccessfulLogin: boolean; //redirects user on successful login to the target URL, otherwise shows a profile.
-    getOpenAmUrl(): string; //returns a full OpenAM URL, for example http://openam.example.org:8080/openam
+    getOpenAmUrl: () => string; //returns a full OpenAM URL, for example http://openam.example.org:8080/openam
 }
 
 const currentConfig: Config = {
