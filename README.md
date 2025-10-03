@@ -10,11 +10,13 @@ This project is intended to provide an alternative frontend SDK for interacting 
 - **TypeScript Support**: Enhance development experience with type safety and better code completion.
 - **Seamless Integration**: Easily integrate OpenAM with minimal configura
 
+# Prerequisites
+- Node.js 22 LTS and newer
+- OpenAM 13 and newer
+
 ## Installation
 
-### As an Application
-
-Clone the source code:
+Clone and build the source code
 
 ```bash
 git clone https://github.com/OpenIdentityPlatform/openam-js-sdk.git
@@ -23,8 +25,12 @@ git clone https://github.com/OpenIdentityPlatform/openam-js-sdk.git
 ```bash
 cd openam-js-sdk
 npm install
-npm run build:app
+npm run build
 ```
+
+## Usage
+
+### As an Application
 
 Copy the contents of the `dist/app` folder into your OpenAM WAR file (or the extracted WAR contents in your web container), e.g., into a directory like `extui`, so it could be accessible in your OpenAM context path, for example, http://openam.example.org:8080/openam/extui
 
@@ -32,11 +38,13 @@ You can also run the application in a standalone server. The only condition, the
 
 
 ## As an SDK library
+
 To install the SDK, use npm or yarn:
+
 ```bash
-npm install openam-js-sdk
+npm install <path to openam-js-sdk folder> #for example /home/user/projects/openam-js-sdk
 # or
-yarn add openam-js-sdk
+yarn add <path to openam-js-sdk folder>
 ``` 
 ## Usage
 Here's a basic example of how to use the SDK in a React application:
@@ -53,6 +61,7 @@ const App = () => {
 ```
 
 ## Customization
+
 You can customize the SDK by providing your own UI components and styles. 
 
 To customize the application behaviour, customise the following settings:
@@ -86,7 +95,6 @@ setConfig({
       <p>{error?.message}</p>
       <input type="button" value="Retry" onClick={() => resetError()} />
     </div>
-  }
 })
 
 createRoot(document.getElementById('root')!).render(
