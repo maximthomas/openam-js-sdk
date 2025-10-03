@@ -6,10 +6,12 @@ const DefaultCallbackElement: CallbackElement = ({callback, setCallbackValue}) =
     switch (callback.type) {
         case "NameCallback":       
             return <input id={id} placeholder={callback.output[0].value as string} 
-                onChange={(e) => setCallbackValue(e.target.value)} type="text" value={callback.input[0].value} required={true} />     
+                onChange={(e) => setCallbackValue(e.target.value)} type="text" name={id} 
+                value={callback.input[0].value} required={true} />     
         case "PasswordCallback":
             return <input id={id} placeholder={callback.output[0].value as string} 
-                onChange={(e) => setCallbackValue(e.target.value)} type="password" value={callback.input[0].value} required={true} />     
+                onChange={(e) => setCallbackValue(e.target.value)} type="password" name={id} 
+                value={callback.input[0].value} required={true} />     
         default:
             return null
     }
