@@ -6,8 +6,12 @@ const DefaultUserForm: UserForm = ({ userAuthData, userService }) => {
 
     const [userData, setUserData] = useState<UserData | null>(null);
 
-    const onSave = (data: UserData) => {
-        console.log("Saving user data", data); //TODO
+    const onSave = async () => {
+        if (!userData) {
+            return;
+        }
+        const data = await userService.saveUserData(userAuthData.id, userAuthData.realm, userData);
+        setUserData(data);
     };
 
     useEffect(() => {
@@ -33,18 +37,20 @@ const DefaultUserForm: UserForm = ({ userAuthData, userService }) => {
         <form
             onSubmit={e => {
                 e.preventDefault();
-                onSave(userData);
+                onSave();
             }}>
             <div className="form-group">
                 <label htmlFor="username">Username:</label>
-                <input name="username"
+                <input id="username"
+                    name="username"
                     type="text"
                     value={userData.username} readOnly={true}
                 />
             </div>
             <div className="form-group">
                 <label htmlFor="givenName">First Name:</label>
-                <input name="givenName"
+                <input id="givenName"
+                    name="givenName"
                     type="text"
                     value={userData.givenName ? userData.givenName[0] : ""}
                     onChange={e => handleChange("givenName", e.target.value)}
@@ -52,7 +58,8 @@ const DefaultUserForm: UserForm = ({ userAuthData, userService }) => {
             </div>
             <div className="form-group">
                 <label htmlFor="sn">Last Name:</label>
-                <input name="sn"
+                <input id="sn"
+                    name="sn"
                     type="text"
                     value={userData.sn ? userData.sn[0] : ""}
                     onChange={e => handleChange("sn", e.target.value)}
@@ -60,15 +67,17 @@ const DefaultUserForm: UserForm = ({ userAuthData, userService }) => {
             </div>
             <div className="form-group">
                 <label htmlFor="mail">Mail:</label>
-                <input name="mail"
+                <input id="mail"
+                    name="mail"
                     type="email"
                     value={userData.mail ? userData.mail[0] : ""}
                     onChange={e => handleChange("mail", e.target.value)}
                 />
             </div>
             <div className="form-group">
-                <label htmlFor="mail">Phone number:</label>
-                <input name="telephoneNumber"
+                <label htmlFor="telephoneNumber">Phone number:</label>
+                <input id="telephoneNumber"
+                    name="telephoneNumber"
                     type="tel"
                     value={userData.telephoneNumber ? userData.telephoneNumber[0] : ""}
                     onChange={e => handleChange("telephoneNumber", e.target.value)}

@@ -1,4 +1,4 @@
-import type { AuthData, AuthError, SuccessfulAuth } from "../types"
+import type { AuthData, AuthError, SuccessfulAuth, UserAuthData, UserData } from "../types"
 
 const authDataJSON = `{
   "authId": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvdGsiOiJsa21mODI5dHEzbmhraDNyNmVsbGZtYWpybCIsInJlYWxtIjoiZGM9b3BlbmFtLGRjPW9wZW5pZGVudGl0eXBsYXRmb3JtLGRjPW9yZyIsInNlc3Npb25JZCI6IkFRSUM1d00yTFk0U2ZjekloNTRQLTZ1czRod0tSa09ibWFKa251U0p3SUxNYi1VLipBQUpUU1FBQ01ERUFBbE5MQUJNMk56VTVOVEF5T1RrNU5UUXpOemM0T1RZNEFBSlRNUUFBKiJ9.0lYgF063co7bcg_-xbabvrZponm7NMq3s-IeYPaf9Js",
@@ -86,6 +86,72 @@ const successfulAuthJSON = `{
 
 const authErrorJSON = `{"code":401,"reason":"Unauthorized","message":"Authentication Failed"}`
 
+const userAuthDataJSON = `{
+    "id": "demo",
+    "realm": "/",
+    "dn": "id=demo,ou=user,dc=openam,dc=openidentityplatform,dc=org",
+    "successURL": "/openam/console",
+    "fullLoginURL": "/openam/UI/Login?realm=%2F"
+}`
+
+const userDataJSON = `{
+    "username": "demo",
+    "realm": "/",
+    "uid": [
+        "demo"
+    ],
+    "universalid": [
+        "id=demo,ou=user,dc=openam,dc=openidentityplatform,dc=org"
+    ],
+    "oath2faEnabled": [
+        "1"
+    ],
+    "objectClass": [
+        "iplanet-am-managed-person",
+        "inetuser",
+        "sunFederationManagerDataStore",
+        "sunFMSAML2NameIdentifier",
+        "devicePrintProfilesContainer",
+        "inetorgperson",
+        "sunIdentityServerLibertyPPService",
+        "iPlanetPreferences",
+        "pushDeviceProfilesContainer",
+        "iplanet-am-user-service",
+        "forgerock-am-dashboard-service",
+        "organizationalperson",
+        "top",
+        "kbaInfoContainer",
+        "sunAMAuthAccountLockout",
+        "person",
+        "oathDeviceProfilesContainer",
+        "iplanet-am-auth-configuration-service"
+    ],
+    "inetUserStatus": [
+        "Active"
+    ],
+    "dn": [
+        "uid=demo,ou=people,dc=openam,dc=openidentityplatform,dc=org"
+    ],
+    "sn": [
+        "John"
+    ],
+    "cn": [
+        "John Doe"
+    ],
+    "createTimestamp": [
+        "20250805142017Z"
+    ],
+    "modifyTimestamp": [
+        "20250925124445Z"
+    ],
+    "roles": [
+        "ui-self-service-user"
+    ]
+}`
+
 export const mockAuthData = JSON.parse(authDataJSON) as AuthData
 export const mockSuccessfulAuth = JSON.parse(successfulAuthJSON) as SuccessfulAuth
-export const mockAuthError  = JSON.parse(authDataJSON) as AuthError
+export const mockAuthError = JSON.parse(authErrorJSON) as AuthError
+
+export const mockUserAuthData = JSON.parse(userAuthDataJSON) as UserAuthData
+export const mockUserData = JSON.parse(userDataJSON) as UserData

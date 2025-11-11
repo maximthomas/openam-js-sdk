@@ -47,6 +47,7 @@ const OpenAMUI: React.FC = () => {
     const errorAuthHandler = (authError: AuthError) => {
         setError(authError);
     }
+
     if(error) {
         return <config.errorForm error={error} resetError={() => setError(null)} />;
     }
@@ -55,7 +56,7 @@ const OpenAMUI: React.FC = () => {
             doRedirect(userAuthData.successURL);
             return;
         }
-        return <config.userForm userAuthData={userAuthData} userService={userService} />;
+        return <config.userForm userAuthData={userAuthData} userService={userService} errorAuthHandler={errorAuthHandler}  />;
     }
 
     return <Login loginService={loginService} successfulAuthHandler={successfullAuthHandler} errorAuthHandler={errorAuthHandler} />;

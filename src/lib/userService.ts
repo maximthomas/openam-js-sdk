@@ -14,6 +14,7 @@ class UserService {
     this.usersUrl = openamUrl.concat("/json/users");
   }
 
+
   getUserIdFromSession = async (): Promise<UserAuthData | null> => {
     try {
       const response = await fetch(this.usersUrl.concat("?_action=idFromSession"), {
@@ -24,7 +25,7 @@ class UserService {
           "Content-Type": "application/json"
         },
       })
-      if(!response.ok) {
+      if (!response.ok) {
         return null;
       }
       return await response.json();
@@ -37,11 +38,8 @@ class UserService {
 
   getUserData = async (userId: string, realm: string): Promise<UserData> => {
     try {
-      if (!realm || realm === "" || realm === "/") {
-        realm = "root";
-      } 
-      const userUrl= this.userUrlTemplate.replace("{realm}", realm).replace("{userId}", userId);
-      
+      const userUrl = this.getUserUrlFromTemplate(userId, realm);
+
       const response = await fetch(userUrl, {
         method: "GET",
         mode: "cors",
@@ -54,10 +52,49 @@ class UserService {
     } catch (e) {
       console.log("error getting user data", e)
       console.log("fallback to demo user data")
-      return JSON.parse(userData);
+      return JSON.parse(testUserData);
     }
   }
+
+  saveUserData = async (userId: string, realm: string, userData: UserData): Promise<UserData> => {
+    const userUrl = this.getUserUrlFromTemplate(userId, realm);
+
+    const dataToUpdate = {
+      givenName: userData.givenName,
+      sn: userData.sn,
+      mail: userData.mail,
+      telephoneNumber: userData.telephoneNumber
+    }
+
+    try {
+      const response = await fetch(userUrl, {
+        method: "PUT",
+        mode: "cors",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dataToUpdate),
+      }
+      )
+      return await response.json();
+    }
+
+    catch (e) {
+      console.log("error getting user data", e)
+      console.log("fallback to demo user data")
+      return JSON.parse(testUserData);
+    }
+  }
+  private getUserUrlFromTemplate(userId: string, realm: string): string {
+    if (!realm || realm === "" || realm === "/") {
+      realm = "root";
+    }
+    return this.userUrlTemplate.replace("{realm}", realm).replace("{userId}", userId);
+  }
+
 }
+
 
 
 export { UserService }
@@ -72,7 +109,7 @@ export { UserService }
 
 // const userUnauthorizedResponse = `{"code":401,"reason":"Unauthorized","message":"Access Denied"}`
 
-const userData = `{
+const testUserData = `{
     "username": "demo",
     "realm": "/",
     "uid": [
@@ -126,3 +163,5 @@ const userData = `{
         "ui-self-service-user"
     ]
 }`
+
+

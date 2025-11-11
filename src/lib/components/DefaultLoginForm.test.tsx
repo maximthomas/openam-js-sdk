@@ -1,12 +1,9 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { vi, describe, it, expect } from 'vitest';
 import DefaultLoginForm from './DefaultLoginForm';
 import { mockAuthData } from '../__tests__/mocks';
 import { setConfig } from '../config';
-import type { ActionElements, CallbackElement, LoginForm } from './types';
-
-
-
+import type { ActionElements, CallbackElement } from './types';
 
 describe('DefaultLoginForm', () => {
     const mockCallbackElement: CallbackElement = vi.fn();
@@ -19,8 +16,7 @@ describe('DefaultLoginForm', () => {
         callbackElement: mockCallbackElement,
         actionElements: mockActionElements,
     })
-
-    
+   
 
     const defaultProps = {
         authData: mockAuthData,

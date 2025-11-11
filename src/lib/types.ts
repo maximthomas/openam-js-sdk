@@ -44,7 +44,6 @@ export interface UserAuthData {
 }
 
 export interface UserData {
-  telephoneNumber: any;
   username: string;
   realm: string;
   uid: string[];
@@ -60,6 +59,7 @@ export interface UserData {
   roles: string[];
   givenName?: string[];
   mail?: string[];
+  telephoneNumber?: string[];
 }
 
 export type AuthResponse = AuthData | SuccessfulAuth | AuthError;

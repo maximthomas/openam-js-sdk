@@ -62,7 +62,7 @@ const Login: React.FC<LoginProps> = ({ loginService, successfulAuthHandler, erro
         if (!authData) {
             return
         }
-
+        
         const newAuthData = loginService.setConfirmationActionValue(action, authData);
 
         const authResponse = await loginService.submitCallbacks(newAuthData)

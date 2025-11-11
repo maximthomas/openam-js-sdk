@@ -20,6 +20,7 @@ export type CallbackElement = React.FC<{
 export type UserForm = React.FC<{
   userAuthData: UserAuthData;
   userService: UserService;
+  errorAuthHandler: (authError: AuthError) => void;
 }>
 
 // renders an authentication error form
