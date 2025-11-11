@@ -25,7 +25,7 @@ const DefaultLoginForm: LoginForm = ({ authData, setCallbackValue, doLogin }) =>
         <h2>{authData.header}</h2>
         <form onSubmit={handleSubmit}>
             {authData.callbacks.filter((cb) => cb.type !== 'ConfirmationCallback').map((cb, i) => {
-                const id = cb.input[0].name;
+                const id = `callback_${i}`;
                 return <div key={id} className="form-group">
                     <config.callbackElement callback={cb} setCallbackValue={(val) => setCallbackValue(i, val)} />
                 </div>

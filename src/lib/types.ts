@@ -9,7 +9,7 @@ export interface CallbackInput {
 }
 
 export interface Callback {
-  type: 'NameCallback' | 'PasswordCallback' | 'ConfirmationCallback';
+  type: 'NameCallback' | 'PasswordCallback' | 'ConfirmationCallback' | 'TextOutputCallback';
   output: CallbackOutput[];
   input: CallbackInput[];
 }
