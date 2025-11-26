@@ -1,4 +1,4 @@
-import { useEffect, type JSX } from "react";
+import { useEffect } from "react";
 import type { Callback } from "../types";
 import type { CallbackElement } from "./types";
 

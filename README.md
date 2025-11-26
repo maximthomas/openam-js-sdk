@@ -12,7 +12,7 @@ This project is intended to provide an alternative frontend SDK for interacting 
 
 # Prerequisites
 - Node.js 22 LTS and newer
-- OpenAM 13 and newer
+- OpenAM 14 and newer
 
 ## Installation
 

@@ -2,7 +2,7 @@ import type { ActionElements } from "./types";
 
 const DefaultActionElements: ActionElements = ({ callbacks }) => {
 
-    const defaultAction = <input type="submit" value="Log In" />
+    const defaultAction = <input type="submit" className="primary-button" value="Log In" name="IDButton" />
     const callbackIdx = callbacks.findIndex((cb) => (cb.type === 'ConfirmationCallback'));
     if (callbackIdx < 0) {
         return defaultAction;

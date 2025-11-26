@@ -30,8 +30,12 @@ class UserService {
       }
       return await response.json();
     } catch (e) {
-      console.log("error getting user id from session", e)
-      console.log("fallback to demo user")
+      if(import.meta.env.DEV) {
+        console.log("error getting user id from session", e)
+        console.log("fallback to demo user")
+      } else {
+        console.log("request error ocurred:", e)
+      }
       return null;
     }
   }
@@ -50,9 +54,13 @@ class UserService {
       })
       return await response.json();
     } catch (e) {
-      console.log("error getting user data", e)
-      console.log("fallback to demo user data")
-      return JSON.parse(testUserData);
+      if(import.meta.env.DEV) {
+        console.log("error getting user data", e)
+        console.log("fallback to demo user data")
+        return JSON.parse(testUserData);
+      } else {
+        throw e
+      }
     }
   }
 
@@ -72,6 +80,7 @@ class UserService {
         mode: "cors",
         credentials: "include",
         headers: {
+          "Accept-API-Version": "resource=2.0, protocol=1.0",
           "Content-Type": "application/json"
         },
         body: JSON.stringify(dataToUpdate),
@@ -81,9 +90,13 @@ class UserService {
     }
 
     catch (e) {
-      console.log("error getting user data", e)
-      console.log("fallback to demo user data")
-      return JSON.parse(testUserData);
+      if(import.meta.env.DEV) {
+        console.log("error getting user data", e)
+        console.log("fallback to demo user data")
+        return JSON.parse(testUserData);
+      } else {
+        throw e
+      }
     }
   }
   private getUserUrlFromTemplate(userId: string, realm: string): string {

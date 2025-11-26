@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import { vi, describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import DefaultActionElements from './DefaultActionElements';
 import { mockAuthData } from '../__tests__/mocks';
 

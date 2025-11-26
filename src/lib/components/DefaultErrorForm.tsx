@@ -2,9 +2,11 @@ import type { ErrorForm } from "./types";
 
 const DefaultErrorForm: ErrorForm = ({ error, resetError }) => {
     return <div>
-        <h1>An error occurred</h1>
+        <h2>An error occurred</h2>
         <p>{error?.message}</p>
-        <input type="button" value="Retry" onClick={() => resetError()} />
+        <div className="button-group">
+            <input type="button" className="primary-button" value="Retry" onClick={() => resetError()} />
+        </div>
     </div>
 }
 

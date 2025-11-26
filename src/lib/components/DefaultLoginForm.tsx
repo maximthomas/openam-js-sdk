@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import type { LoginForm } from "./types";
 import { getConfig } from "../config";
 

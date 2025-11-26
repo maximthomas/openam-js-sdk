@@ -17,7 +17,7 @@
     "dist/lib"
   ],
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0",
     "build": "npm run build:app && npm run build:lib",
     "build:app": "tsc -b && vite build --config vite.config.ts",
     "build:lib": "tsc -b && vite build --config vite.lib.config.ts",

@@ -19,14 +19,14 @@ export interface Config {
 
 const currentConfig: Config = {
     openamServer: import.meta.env.VITE_OPENAM_SERVER ?? "",
-    openamContextPath: import.meta.env.VITE_OPENAM_CONTEXT_PATH ?? "/openam",
+    openamContextPath: import.meta.env.VITE_OPENAM_CONTEXT_PATH ?? "/".concat(location.pathname.replace(new RegExp("^/|/$","g"), "").split("/")[0]),
     getOpenAmUrl: () => `${currentConfig.openamServer}${currentConfig.openamContextPath}`,
     loginForm: DefaultLoginForm,
     userForm: DefaultUserForm,
     errorForm: DefaultErrorForm,
     callbackElement: DefaultCallbackElement,
     actionElements: DefaultActionElements,
-    redirectOnSuccessfulLogin: true,
+    redirectOnSuccessfulLogin: false,
 }
 
 export const getConfig = (): Config => currentConfig;
